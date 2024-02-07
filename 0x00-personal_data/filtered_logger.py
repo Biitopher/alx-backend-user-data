@@ -2,7 +2,8 @@
 """Function called filter_datum"""
 import re
 from typing import List
-import logging, mysql.connector
+import logging
+import mysql.connector
 import csv
 import os
 
@@ -59,6 +60,7 @@ def get_logger() -> logging.Logger:
     logger.propagate = False
 
     return logger
+
 
 if __name__ == '__main__':
     main()
