@@ -49,7 +49,7 @@ def filter_datum(fields: List[str], redaction: str, message: str,
     return message
 
 
-def get_logger():
+def get_logger() -> logging.Logger:
     """Create a logger named "user_data" with INFO level"""
     logger = logging.getLogger("user_data")
     logger.setLevel(logging.INFO)
