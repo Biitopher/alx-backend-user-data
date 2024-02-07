@@ -35,6 +35,7 @@ def filter_datum(fields: List[str], redaction: str, message: str,
                          f'{result}={redaction}{separator}', message)
     return message
 
+
 def get_logger():
     """Create a logger named "user_data" with INFO level"""
     logger = logging.getLogger("user_data")
