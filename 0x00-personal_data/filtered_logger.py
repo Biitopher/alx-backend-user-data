@@ -2,8 +2,9 @@
 """Function called filter_datum"""
 import re
 from typing import List
-import logging
+import logging, mysql.connector
 import csv
+import os
 
 
 class RedactingFormatter(logging.Formatter):
@@ -28,6 +29,17 @@ class RedactingFormatter(logging.Formatter):
 PII_FIELDS = ("name", "email", "password", "ssn", "phone")
 
 
+def get_db():
+    """ Connect to MySQL environment """
+    db_connect = mysql.connector.connect(
+        user=os.getenv('PERSONAL_DATA_DB_USERNAME', 'root'),
+        password=os.getenv('PERSONAL_DATA_DB_PASSWORD', ''),
+        host=os.getenv('PERSONAL_DATA_DB_HOST', 'localhost'),
+        database=os.getenv('PERSONAL_DATA_DB_NAME')
+    )
+    return db_connect
+
+
 def filter_datum(fields: List[str], redaction: str, message: str,
                  separator: str) -> str:
     """implementation of the filter_datum function"""
@@ -47,3 +59,6 @@ def get_logger():
     logger.propagate = False
 
     return logger
+
+if __name__ == '__main__':
+    main()
