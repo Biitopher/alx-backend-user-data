@@ -70,10 +70,13 @@ def main() -> None:
     cursor = db_connection.cursor()
 
     cursor.execute("SELECT * FROM users")
-    result = cursor.fetchall()
+    result = [i[0] for i in cursor.description]
 
-    for row in result:
-        print(row)
+    logger = get_logger()
+
+    for row in cursor:
+        str_row = ''.join(f'{f}={str(r)}; ' for r, f in zip(row, result))
+        logger.info(str_row.strip())
 
     cursor.close()
     db_connection.close()
