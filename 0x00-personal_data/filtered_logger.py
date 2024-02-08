@@ -32,12 +32,14 @@ PII_FIELDS = ("name", "email", "password", "ssn", "phone")
 
 def get_db():
     """ Connect to MySQL environment """
+    db_name = os.getenv('PERSONAL_DATA_DB_NAME')
     db_connect = mysql.connector.connect(
         user=os.getenv('PERSONAL_DATA_DB_USERNAME', 'root'),
         password=os.getenv('PERSONAL_DATA_DB_PASSWORD', ''),
         host=os.getenv('PERSONAL_DATA_DB_HOST', 'localhost'),
         database=os.getenv('PERSONAL_DATA_DB_NAME')
     )
+
     return db_connect
 
 
@@ -60,6 +62,22 @@ def get_logger() -> logging.Logger:
     logger.propagate = False
 
     return logger
+
+
+
+def main() -> None:
+    """Database connection using get_db"""
+    db_connection = get_db()
+    cursor = db_connection.cursor()
+
+    cursor.execute("SELECT * FROM users")
+    result = cursor.fetchall()
+
+    for row in result:
+        print(row)
+
+    cursor.close()
+    db_connection.close()
 
 
 if __name__ == '__main__':
