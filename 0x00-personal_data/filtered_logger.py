@@ -30,7 +30,7 @@ class RedactingFormatter(logging.Formatter):
 PII_FIELDS = ("name", "email", "password", "ssn", "phone")
 
 
-def get_db():
+def get_db() -> mysql.connector.connection.MySQLConnection:
     """ Connect to MySQL environment """
     db_name = os.getenv('PERSONAL_DATA_DB_NAME')
     db_connect = mysql.connector.connect(
@@ -70,8 +70,8 @@ def main() -> None:
     cursor = db_connection.cursor()
 
     cursor.execute("SELECT COUNT(*) FROM users;")
-    count = cursor.fetchone()[0]
-    print(count)
+    for row in cursor:
+        print(row[0])
 
     cursor.close()
     db_connection.close()
