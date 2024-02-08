@@ -37,7 +37,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
         user=os.getenv('PERSONAL_DATA_DB_USERNAME', 'root'),
         password=os.getenv('PERSONAL_DATA_DB_PASSWORD', ''),
         host=os.getenv('PERSONAL_DATA_DB_HOST', 'localhost'),
-        database=os.getenv('PERSONAL_DATA_DB_NAME')   
+        database=os.getenv('PERSONAL_DATA_DB_NAME')
     )
 
     return db_connect
@@ -70,8 +70,13 @@ def main() -> None:
     cursor = db_connection.cursor()
 
     cursor.execute("SELECT COUNT(*) FROM users;")
+    result = [i[0] for i in cursor.description]
+
+    logger = get_logger()
+
     for row in cursor:
-        print(row[0])
+        str_row = ''.join(f'{f}={str(r)}; ' for r, f in zip(row, result))
+        logger.info(str_row.strip())
 
     cursor.close()
     db_connection.close()
