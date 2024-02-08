@@ -37,7 +37,7 @@ def get_db():
         user=os.getenv('PERSONAL_DATA_DB_USERNAME', 'root'),
         password=os.getenv('PERSONAL_DATA_DB_PASSWORD', ''),
         host=os.getenv('PERSONAL_DATA_DB_HOST', 'localhost'),
-        database=os.getenv('PERSONAL_DATA_DB_NAME')
+        database=os.getenv('PERSONAL_DATA_DB_NAME')   
     )
 
     return db_connect
@@ -69,14 +69,9 @@ def main() -> None:
     db_connection = get_db()
     cursor = db_connection.cursor()
 
-    cursor.execute("SELECT * FROM users")
-    result = [i[0] for i in cursor.description]
-
-    logger = get_logger()
-
-    for row in cursor:
-        str_row = ''.join(f'{f}={str(r)}; ' for r, f in zip(row, result))
-        logger.info(str_row.strip())
+    cursor.execute("SELECT COUNT(*) FROM users;")
+    count = cursor.fetchone()[0]
+    print(count)
 
     cursor.close()
     db_connection.close()
