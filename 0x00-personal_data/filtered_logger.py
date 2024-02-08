@@ -64,7 +64,6 @@ def get_logger() -> logging.Logger:
     return logger
 
 
-
 def main() -> None:
     """Database connection using get_db"""
     db_connection = get_db()
