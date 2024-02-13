@@ -7,19 +7,20 @@ from api.v1.views import app_views
 from flask import Flask, jsonify, abort, request
 from flask_cors import (CORS, cross_origin)
 import os
-from api.v1.auth.auth import Auth
 
 
 app = Flask(__name__)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 app.register_blueprint(app_views)
 auth = None
-auth_type = os.environ.get('AUTH_TYPE', 'default')
-if auth_type == 'default':
-    from api.v1.auth.auth_default import AuthDefault
-    auth = AuthDefault()
-elif auth_type == 'custom':
-    pass
+AUTH_TYPE = getenv("AUTH_TYPE")
+
+if AUTH_TYPE == "auth":
+    from api.v1.auth.auth import Auth
+    auth = Auth()
+elif AUTH_TYPE == "basic_auth":
+    from api.v1.auth.basic_auth import BasicAuth
+    auth = BasicAuth()
 
 
 @app.errorhandler(404)
@@ -43,8 +44,7 @@ def forbidden_error(error) -> str:
 
 @app.before_request
 def before_request():
-    global auth
-
+    """Request  validation"""
     if auth is None:
         return
 
