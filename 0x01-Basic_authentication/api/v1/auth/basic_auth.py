@@ -8,11 +8,6 @@ from models.user import User
 
 class BasicAuth(Auth):
     """Creates class BasicAuth"""
-    def authorization_header(self, request) -> str:
-        """Implement logic to extract authorization header from the request"""
-        pass
-
-
     def extract_base64_authorization_header(self, 
                                             authorization_header: str) -> str:
         """Decodes base64 string"""
@@ -41,9 +36,9 @@ class BasicAuth(Auth):
 
         try:
             decoded_bytes = base64.b64decode(base64_authorization_header)
-            decoded_value = decoded_bytes.decode('utf-8')
+            decoded_value = decoded_bytes.decode('utf-8', errors='strict')
             return decoded_value
-        except base64.binascii.Error:
+        except (base64.binascii.Error, UnicodeDecodeError):
             return None
 
 
