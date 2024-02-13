@@ -8,6 +8,11 @@ from models.user import User
 
 class BasicAuth(Auth):
     """Creates class BasicAuth"""
+    def authorization_header(self, request) -> str:
+        """Implement logic to extract authorization header from the request"""
+        pass
+
+
     def extract_base64_authorization_header(self, 
                                             authorization_header: str) -> str:
         """Decodes base64 string"""
@@ -79,3 +84,19 @@ class BasicAuth(Auth):
                 return user
 
         return None
+
+
+    def current_user(self, request=None) -> TypeVar('User'):
+        """Retrieve the authorization header from the request"""
+        authorization_header = self.authorization_header(request)
+
+        decoded_value = self.decode_base64_authorization_header(
+            self.extract_base64_authorization_header(authorization_header)
+        )
+
+        user_email, user_password = self.extract_user_credentials(decoded_value)
+
+        user_instance = self.user_object_from_credentials(user_email,
+                                                          user_password)
+
+        return user_instance
