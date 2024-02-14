@@ -9,6 +9,7 @@ from flask_cors import (CORS, cross_origin)
 import os
 from os import getenv
 
+
 app = Flask(__name__)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 app.register_blueprint(app_views)
@@ -65,6 +66,7 @@ def before_request():
     if current_user is None:
         abort(403)
     request.current_user = current_user
+
 
 if __name__ == "__main__":
     host = getenv("API_HOST", "0.0.0.0")
