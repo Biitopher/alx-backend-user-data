@@ -6,8 +6,7 @@ from os import getenv
 from api.v1.views import app_views
 from flask import Flask, jsonify, abort, request
 from flask_cors import (CORS, cross_origin)
-from os import getenv
-from api.v1.auth.auth import Auth
+from api.v1.auth.session_auth import SessionAuth
 
 
 app = Flask(__name__)
@@ -53,7 +52,8 @@ def before_request():
         return
 
     excluded_paths = ['/api/v1/status/', '/api/v1/unauthorized/',
-                      '/api/v1/forbidden/']
+                      '/api/v1/forbidden/',
+                      '/api/v1/auth_session/login/']
 
     if request.path in excluded_paths:
         return
@@ -68,7 +68,6 @@ def before_request():
     current_user = auth.current_user(request)
     if current_user is None:
         abort(403)
-    request.current_user = current_user
 
 
 if __name__ == "__main__":
