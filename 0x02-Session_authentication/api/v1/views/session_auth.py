@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 """ Module of Users views"""
 from flask import jsonify, request, abort
-from api.v1.views import app_views
-from models.user import User
+from api.v1.views import User
 from os import getenv
-from api.v1.auth.auth import Auth
+from api.v1.views import app_views
 
 
 @app_views.route('/auth_session/login', methods=['POST'], strict_slashes=False)
