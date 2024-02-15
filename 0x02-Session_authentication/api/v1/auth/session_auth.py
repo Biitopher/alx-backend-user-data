@@ -2,6 +2,9 @@
 """Class SessionAuth that inherits from Auth"""
 from api.v1.auth.auth import Auth
 import uuid
+from flask import Flask, request, jsonify
+from api.v1.views import app
+from models.user import User
 
 
 class SessionAuth(Auth):
@@ -36,3 +39,32 @@ class SessionAuth(Auth):
         user_id = self.user_id_for_session_id(session_id)
 
         return User.get(user_id)
+
+    @app.route('/auth_session/login', methods=['POST'])
+    def session_login():
+        """Session authentication"""
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        if not email:
+            return jsonify({"error": "email missing"}), 400
+
+        if not password:
+            return jsonify({"error": "password missing"}), 400
+
+        user = User.search({'email': email})
+
+        if not user:
+            return jsonify({"error": "no user found for this email"}), 404
+
+        if not user.is_valid_password(password):
+            return jsonify({"error": "wrong password"}), 401
+
+        session_id = auth.create_session(user.id)
+        response_data = user.to_json()
+
+        session_cookie_name = app.config.get('SESSION_NAME', 'session_id')
+        response = jsonify(response_data)
+        response.set_cookie(session_cookie_name, session_id)
+
+        return response
