@@ -6,7 +6,7 @@ from api.v1.auth.session_exp_auth import SessionExpAuth
 
 class SessionDBAuth(SessionExpAuth):
     def create_session(self, user_id=None):
-        """Create sessional function"""
+        """Create session function"""
         session_id = super().create_session(user_id)
         if session_id:
             user_session = UserSession(user_id=user_id, session_id=session_id)
@@ -26,7 +26,7 @@ class SessionDBAuth(SessionExpAuth):
         return user_session.user_id
 
     def destroy_session(self, request=None):
-        """Destroy the session""
+        """Destroy the session"""
         if request is None:
             return
 
