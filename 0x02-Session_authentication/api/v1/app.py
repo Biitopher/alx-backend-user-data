@@ -64,13 +64,9 @@ def before_request() -> str:
     auth_header = auth.authorization_header(request)
     if auth_header is None:
         abort(401)
-    if auth.session_cookie(request) is None:
-        abort(401)
 
     current_user = auth.current_user(request)
     if current_user is None:
-        abort(403)
-    if request.current_user is None:
         abort(403)
 
 
