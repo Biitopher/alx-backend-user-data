@@ -3,6 +3,7 @@
 from flask import jsonify, request
 from api.v1.views import app_views
 from models.user import User
+from os import getenv
 from os
 from api.v1.app import auth
 
@@ -12,7 +13,6 @@ def session_login():
     """Session authentication login"""
     email = request.form.get('email')
     password = request.form.get('password')
-
     if email is None or email == '':
         return jsonify({"error": "email missing"}), 400
     if password is None or password == '':
