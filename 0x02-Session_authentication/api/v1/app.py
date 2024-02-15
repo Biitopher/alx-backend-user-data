@@ -55,6 +55,9 @@ def before_request() -> str:
                       '/api/v1/forbidden/',
                       '/api/v1/auth_session/login/']
 
+    if request.path in excluded_paths:
+        return
+
     if not auth.require_auth(request.path, excluded_paths):
         return
 
