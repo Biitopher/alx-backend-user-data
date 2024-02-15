@@ -3,10 +3,10 @@
 from flask import jsonify, request
 from api.v1.views import app_views
 from models.user import User
-import os
-from api.v1.app import auth
+from api.v1.auth.session_auth import SessionAuth
 
 
+auth = SessionAuth()
 @app_views.route('/auth_session/login', methods=['POST'], strict_slashes=False)
 def session_login():
     """Session authentication login"""
