@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """ Module of Users views"""
-from flask import Flask, jsonify, abort, request, make_response
+from flask import jsonify, request
 from api.v1.views import app_views
 from models.user import User
 from os import getenv
@@ -24,10 +24,11 @@ def session_login():
     if not user[0].is_valid_password(password):
         return jsonify({"error": "wrong password"}), 401
 
-    session_id = auth.create_session(user[0].id)
-    response_data = user[0].to_json()
-    response = make_response(jsonify(response_data), 200)
-    session_cookie_name = getenv("SESSION_NAME", "_my_session_id")
-    response.set_cookie(session_cookie_name, session_id)
-
-    return response
+    for user in users:
+        if user.is_valid_password(password):
+            session_id = auth.create_session(user.id)
+            response = jsonify(user.to_json())
+            session_name = os.getenv('SESSION_NAME', '_my_session_id')
+            response.set_cookie(session_name, session_id)
+            return response
+    return jsonify({"error": "wrong password"}), 401
