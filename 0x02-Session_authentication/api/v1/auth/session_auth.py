@@ -3,7 +3,7 @@
 from api.v1.auth.auth import Auth
 import uuid
 from flask import Flask, request, jsonify
-from api.v1.views import app
+from api.v1.views import app_views
 from models.user import User
 
 
