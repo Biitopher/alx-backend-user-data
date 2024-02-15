@@ -7,7 +7,6 @@ from api.v1.app import auth
 from os import getenv
 
 
-auth = SessionAuth()
 @app_views.route('/auth_session/login', methods=['POST'], strict_slashes=False)
 def session_login():
     """Session authentication login"""
