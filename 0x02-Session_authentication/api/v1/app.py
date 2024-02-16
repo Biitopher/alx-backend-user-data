@@ -58,8 +58,7 @@ def before_request():
     excluded_paths = ['/api/v1/status/', '/api/v1/unauthorized/',
                       '/api/v1/forbidden/',
                       '/api/v1/auth_session/login/']
-    if request.path in excluded_paths:
-        return
+
     if not auth.require_auth(request.path, excluded_paths):
         return
     auth_header = auth.authorization_header(request)
