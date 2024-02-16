@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """Sessions in database"""
 from models.user_session import UserSession
-from .session_exp_auth import SessionExpAuth
-from datetime import datetime, timedelta
+from api.v1.auth.session_auth import SessionAuth
 
 
 class SessionDBAuth(SessionExpAuth):
