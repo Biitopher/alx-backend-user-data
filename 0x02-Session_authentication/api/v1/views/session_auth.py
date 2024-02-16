@@ -32,7 +32,6 @@ def session_login():
                  strict_slashes=False)
 def session_logout():
     """Deletes the user session logout"""
-    from api.v1.app import auth
     if not auth.destroy_session(request):
         abort(404)
 
