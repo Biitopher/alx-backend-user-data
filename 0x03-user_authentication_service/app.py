@@ -13,6 +13,7 @@ def welcome():
     message = {"message": "Bienvenue"}
     return jsonify(message)
 
+
 @app.route("/users", methods=["POST"])
 def register_user():
     """Check users existence and register if not"""
