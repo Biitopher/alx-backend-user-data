@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """Sessions in database"""
 from models.user_session import UserSession
-from .session_exp_auth import SessionExpAuth
-from datetime import datetime, timedelta
+from api.v1.auth.session_exp_auth import SessionExpAuth
 
 
 class SessionDBAuth(SessionExpAuth):
@@ -31,7 +30,7 @@ class SessionDBAuth(SessionExpAuth):
         if request is None:
             return
 
-        session_id = request.cookies.get("session_id")
+        session_id = SessionDBAuth().session_cookie(request)
         if session_id:
             user_session = UserSession.load_from_file(session_id)
             if user_session:

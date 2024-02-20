@@ -2,6 +2,7 @@
 """Handle User session storage"""
 from models.base import Base
 
+
 class UserSession(Base):
     """The class user session"""
     def __init__(self, *args, user_id=None, session_id=None, **kwargs):

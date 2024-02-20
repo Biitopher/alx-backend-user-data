@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """ Module of Users views"""
+from os import getenv
 from flask import jsonify, request, abort
 from api.v1.views import User
-from os import getenv
 from api.v1.views import app_views
 
 
@@ -31,7 +31,7 @@ def session_login():
 @app_views.route('/auth_session/logout', methods=['DELETE'],
                  strict_slashes=False)
 def session_logout():
-    """Deletes the user session / logout"""
+    """Deletes the user session logout"""
     if not auth.destroy_session(request):
         abort(404)
 
