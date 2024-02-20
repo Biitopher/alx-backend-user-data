@@ -58,3 +58,18 @@ class DB:
             self._session.rollback()
             raise e
         return user
+    def update_user(self, user_id: int, **kwargs):
+        """Update a user in the database based on the provided arguments"""
+        try:
+            user = self.find_user_by(id=user_id)
+
+            for key, value in kwargs.items():
+                if hasattr(User, key):
+                    setattr(user, key, value)
+                else:
+                    raise ValueError
+
+            self._session.commit()
+
+        except NoResultFound:
+            raise NoResultFound
