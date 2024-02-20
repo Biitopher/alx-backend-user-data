@@ -41,16 +41,20 @@ class DB:
 
     def find_user_by(self, **kwargs) -> User:
         """Find a user in the database based on the provided arguments"""
+        if kwargs is None:
+            raise InvalidRequestError
+        for k in kwargs.keys():
+            if not hasattr(User, k):
+                raise InvalidRequestError
         try:
             user = self._session.query(User).filter_by(**kwargs).first()
 
             if user is None:
                 raise NoResultFound
-
-            return user
         except InvalidRequestError as e:
             self._session.rollback()
             raise e
         except NoResultFound as e:
             self._session.rollback()
             raise e
+        return user
