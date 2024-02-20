@@ -39,7 +39,7 @@ class DB:
         self._session.commit()
         return user
 
-    def find_user_by(self, **kwargs):
+    def find_user_by(self, **kwargs) -> User:
         """Find a user in the database based on the provided arguments"""
         try:
             user = self._session.query(User).filter_by(**kwargs).first()
@@ -49,5 +49,8 @@ class DB:
 
             return user
         except InvalidRequestError as e:
+            self._session.rollback()
+            raise e
+        except NoResultFound as e:
             self._session.rollback()
             raise e
