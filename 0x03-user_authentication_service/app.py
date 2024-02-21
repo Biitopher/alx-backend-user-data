@@ -46,19 +46,20 @@ def login():
         response.set_cookie("session_id", session_id)
         return response
 
+
 @app.route('/sessions', methods=['DELETE'])
 def logout():
     """Retrieve session ID from the cookie"""
     session_id = request.cookies.get('session_id')
     if session_id:
         user = auth.get_user_from_session_id(session_id)
-    if user:
-        auth.destroy_session(user.id)
-        return redirect('/')
+        if user:
+            auth.destroy_session(user.id)
+            return redirect('/')
+        else:
+            abort(403)
     else:
         abort(403)
- else:
-     abort(403)
 
 
 if __name__ == "__main__":
