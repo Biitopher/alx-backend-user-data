@@ -51,15 +51,12 @@ def login():
 def logout():
     """Retrieve session ID from the cookie"""
     session_id = request.cookies.get('session_id')
-    if session_id:
-        user = auth.get_user_from_session_id(session_id)
-        if user:
-            auth.destroy_session(user.id)
-            return redirect('/')
-        else:
-            abort(403)
-    else:
+    user = auth.get_user_from_session_id(session_id)
+    if user is None:
         abort(403)
+    else:
+        auth.destroy_session(user.id)
+        return redirect('/')
 
 
 if __name__ == "__main__":
