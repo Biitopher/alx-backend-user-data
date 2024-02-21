@@ -31,7 +31,7 @@ def register_user():
         return jsonify(response_data), 400
 
 
-@app.route('/sessions', methods=['POST'])
+@app.route('/sessions', methods=['POST'], strict_slashes=False)
 def login():
     """Get email and password from the request form data"""
     email = request.form.get('email')
@@ -58,6 +58,18 @@ def logout() -> None:
     else:
         AUTH.destroy_session(user.id)
         return redirect('/')
+
+
+@app.route('/profile', methods=['GET'])
+def get_profile():
+    """Get session_id from the cookie"""
+    session_id = request.cookies.get('session_id')
+
+    session_id and session_id in user_database:
+        user = user_database[session_id]
+        return jsonify({"email": user["email"]}), 200
+    else:
+        return jsonify({"error": "Unauthorized"}), 403
 
 
 if __name__ == "__main__":
