@@ -66,7 +66,9 @@ class Auth:
         """Check if the session_id is None"""
         if session_id is None:
             return None
+        try:
+            user = self._db.get_user_by_session_id(session_id)
 
-        user = self._db.get_user_by_session_id(session_id)
-
-        return user
+            return user
+        except Exception as e:
+            return None
