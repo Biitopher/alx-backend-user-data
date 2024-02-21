@@ -47,12 +47,13 @@ def login():
         return response
 
 
-@app.route('/sessions', methods=['DELETE'])
-def logout():
+@app.route('/sessions', methods=['DELETE'], strict_slashes=False)
+def logout() -> :
     """Retrieve session ID from the cookie"""
+    user = None
     session_id = request.cookies.get('session_id')
     user = AUTH.get_user_from_session_id(session_id)
-    if user is None:
+    if not user :
         abort(403)
     else:
         AUTH.destroy_session(user.id)
