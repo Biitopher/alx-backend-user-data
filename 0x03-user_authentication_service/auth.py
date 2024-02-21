@@ -72,3 +72,7 @@ class Auth:
             return user
         except Exception as e:
             return None
+
+    def destroy_session(self, user_id):
+        """Use public method to update the corresponding user's session ID"""
+        self._db.update_user_session_id(user_id, None)
