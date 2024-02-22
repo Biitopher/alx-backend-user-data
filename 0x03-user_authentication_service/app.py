@@ -32,7 +32,7 @@ def register_user():
 
 
 @app.route('/sessions', methods=['POST'])
-def login() -> str:
+def login():
     """Get email and password from the request form data"""
     email = request.form.get('email')
     password = request.form.get('password')
@@ -48,7 +48,7 @@ def login() -> str:
 
 
 @app.route('/sessions', methods=['DELETE'], strict_slashes=False)
-def logout() -> None:
+def logout():
     """Retrieve session ID from the cookie"""
     session_id = request.cookies.get('session_id', None)
     user = AUTH.get_user_from_session_id(session_id)
