@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Define hash password method"""
-from bcrypt import hashpw, gensalt, checkpw
+import bcrypt
 from db import DB
 from user import User
 from sqlalchemy.orm.exc import NoResultFound
