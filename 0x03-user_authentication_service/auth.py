@@ -77,7 +77,7 @@ class Auth:
         """Use public method to update the corresponding user's session ID"""
         try:
             user = self._db.find_user_by(id=user_id)
-            self._db.update_user_session_id(user_id, None)
+            self._db.update_user_session_id(user_id, session_id=None)
         except NoResultFound:
             return None
 
