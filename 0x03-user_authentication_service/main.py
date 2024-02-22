@@ -5,7 +5,6 @@ import requests
 BASE_URL = "http://127.0.0.1:5000"
 
 
-
 def register_user(email: str, password: str) -> None:
     """register the user"""
     url = f"{BASE_URL}/register"
@@ -13,12 +12,14 @@ def register_user(email: str, password: str) -> None:
     response = requests.post(url, json=payload)
     assert response.status_code == 200
 
+
 def log_in_wrong_password(email: str, password: str) -> None:
     """Error log in wrong password"""
     url = f"{BASE_URL}/login"
     payload = {"email": email, "password": password}
     response = requests.post(url, json=payload)
     assert response.status_code == 401
+
 
 def log_in(email: str, password: str) -> str:
     """Log in email with password"""
@@ -28,11 +29,13 @@ def log_in(email: str, password: str) -> str:
     assert response.status_code == 200
     return response.json()["session_id"]
 
+
 def profile_unlogged() -> None:
     """Unlog the  profile logged on"""
     url = f"{BASE_URL}/profile"
     response = requests.get(url)
     assert response.status_code == 401
+
 
 def profile_logged(session_id: str) -> None:
     """Log on the profile"""
@@ -41,12 +44,14 @@ def profile_logged(session_id: str) -> None:
     response = requests.get(url, headers=headers)
     assert response.status_code == 200
 
+
 def log_out(session_id: str) -> None:
     """End session by log out"""
     url = f"{BASE_URL}/logout"
     headers = {"Authorization": f"Bearer {session_id}"}
     response = requests.get(url, headers=headers)
     assert response.status_code == 200
+
 
 def reset_password_token(email: str) -> str:
     """ Reset the password token"""
@@ -55,6 +60,7 @@ def reset_password_token(email: str) -> str:
     response = requests.post(url, json=payload)
     assert response.status_code == 200
     return response.json()["reset_token"]
+
 
 def update_password(email: str, reset_token: str, new_password: str) -> None:
     """Update the current password"""
