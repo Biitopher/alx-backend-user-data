@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Define hash password method"""
-import bcrypt
+from bcrypt import hashpw, gensalt, checkpw
 from db import DB
 from user import User
 from sqlalchemy.orm.exc import NoResultFound
@@ -78,15 +78,15 @@ class Auth:
         if user_id is None:
             return None
         self._db.update_user_session_id(user_id, None)
+        except NoResultFound:
+            return None
 
     def get_reset_password_token(self, email: str) -> str:
         """Password reset token generation """
         try:
             user = self._db.find_user_by(email=email)
+            reset_token = _generate_uuid()
+            self._db.update_user(user.id, reset_token=reset_token)
+            return reset_token
         except NoResultFound:
-            user = None
-        if user is None:
-            raise ValueError()
-        reset_token = _generate_uuid()
-        self._db.update_user(user.id, reset_token=reset_token)
-        return reset_token
+            raise ValueError
